@@ -48,7 +48,6 @@ public class DeviceInfo {
         private boolean limitAdTrackingEnabled;
 
         private CachedInfo() {
-            advertisingId = getAdvertisingId();
             versionName = getVersionName();
             osName = getOsName();
             osVersion = getOsVersion();
