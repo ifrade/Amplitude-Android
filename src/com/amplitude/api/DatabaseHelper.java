@@ -144,6 +144,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             }
         } catch (SQLiteException e) {
             Log.e(TAG, "getValue failed", e);
+         } catch (RuntimeException e) {
+            Log.e(TAG, "getEvents failed", e);
         } finally {
             if (cursor != null) {
                 cursor.close();
