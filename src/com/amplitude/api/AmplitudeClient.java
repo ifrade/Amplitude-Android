@@ -86,10 +86,14 @@ public class AmplitudeClient {
     }
 
     public AmplitudeClient initialize(Context context, String apiKey) {
-        return initialize(context, apiKey, null);
+        return initialize(context, apiKey, null, null);
     }
 
     public synchronized AmplitudeClient initialize(Context context, String apiKey, String userId) {
+        return initialize(context, apiKey, null, null);
+    }
+
+    public synchronized AmplitudeClient initialize(Context context, String apiKey, String userId, String deviceId) {
         if (context == null) {
             Log.e(TAG, "Argument context cannot be null in initialize()");
             return instance;
@@ -105,7 +109,7 @@ public class AmplitudeClient {
         if (!initialized) {
             this.context = context.getApplicationContext();
             this.apiKey = apiKey;
-            initializeDeviceInfo();
+            initializeDeviceInfo(deviceId);
             SharedPreferences preferences = context.getSharedPreferences(
                     getSharedPreferencesName(), Context.MODE_PRIVATE);
             if (userId != null) {
@@ -133,13 +137,13 @@ public class AmplitudeClient {
         return instance;
     }
 
-    private void initializeDeviceInfo() {
+    private void initializeDeviceInfo(final String extDeviceId) {
         deviceInfo = new DeviceInfo(context);
         runOnLogThread(new Runnable() {
 
             @Override
             public void run() {
-                deviceId = initializeDeviceId();
+                deviceId = (extDeviceId != null ? extDeviceId : initializeDeviceId());
                 deviceInfo.prefetch();
             }
         });
